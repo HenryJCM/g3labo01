@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Laboratorio 1 Sistemas Distribuidos</title>
+	<meta content="This demo shows how to use HighCharts with Spring Boot"
+	name="description" />
+	<object th:include="fragments/head :: head" th:remove="tag"></object>
+
+	<link th:href="@{/assets/pages/css/profile.min.css}" rel="stylesheet"
+	type="text/css" />
+	
+	<link th:href="@{css/carrusel.css}" rel="stylesheet">
+</head>
+
+<body class="page-container-bg-solid">
+	<div th:include="fragments/topmenuheader :: header"></div>
+	<div class="page-container">
+		<div class="page-content-wrapper">
+			<div class="page-head"
+				style="background-color: #eff3f8; padding-top: 40px">
+				<div class="container">
+					<div class="row" style="margin-bottom: 10px"></div>
+					<div class="row" style="margin-bottom: 30px">
+						<div style="margin-bottom: 30px">
+							<h1>LABORATORIO 1 - SISTEMAS DISTRIBUIDOS</h1>
+						</div>
+					</div>
+					<div id="myCarousel" class="carousel slide" data-ride="carousel">
+						<!-- Indicators -->
+
+						<div class="carousel-inner" role="listbox">
+							<div class="item active">
+								<img class="first-slide" th:src="@{/images/gcp.jpg}" alt="First slide">
+								<div class="container centered">
+								<form role="form">
+									<div class="form-group text-center centered">
+                        				<a th:href="@{/chart}">
+                        				<button class="btn btn-primary" th:href="@{/chart}" 
+                        				style="width: 45%;" type="button">INGRESAR A HACER UNA CONSULTA</button>
+                        				</a>
+                        			</div>
+                        			</form>
+										
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		</div>
+		<div th:include="fragments/homefooter :: footer"></div>
+</html>

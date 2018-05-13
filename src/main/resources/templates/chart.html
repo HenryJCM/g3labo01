@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!--<![endif]-->
+
+    <head>
+        <title>Laboratorio 1 Sistemas Distribuidos</title>
+        <meta content="This demo shows how to use HighCharts with Spring Boot" name="description" />
+        <object th:include="fragments/head :: head" th:remove="tag"></object>
+        
+        <link th:href="@{/assets/pages/css/profile.min.css}"  rel="stylesheet" type="text/css" />
+    </head>
+    
+    <body class="page-container-bg-solid">
+        <div th:include="fragments/topmenuheader :: header"></div>
+        <div class="page-container">
+            <div class="page-content-wrapper">
+                <div class="page-head" style="background-color:#eff3f8;padding-top:40px">
+                    <div class="container">
+                        <div class="row" style="margin-bottom:10px">
+                            
+                        </div>
+                        <div class="row" style="margin-bottom:30px">
+                        	<div style="margin-bottom:30px">
+                        		<h1>LABORATORIO 1 - SISTEMAS DISTRIBUIDOS</h1>
+                        	</div>
+                        	<form th:action="@{/chartSearch}" th:object="${search}" method="post">
+                        	<div class="form-group">
+                        		<select th:field=*{indicador}>
+                        			<option th:value="SH.DYN.AIDS">Adults (ages 15+) living with HIV</option>
+                        			<option th:value="SP.DYN.SMAM.MA">Age at first marriage, male</option>
+                        			<option th:value="SP.DYN.SMAM.FE">Age at first marriage, female</option>
+                        			<option th:value="SH.STA.DIAB.ZS">Diabetes prevalence (% of population ages 20 to 79)</option>
+                        			<option th:value="SH.MED.BEDS.ZS">Hospital beds (per 1,000 people)</option>
+                        			<option th:value="SH.TBS.INCD">Incidence of tuberculosis (per 100,000 people)</option>
+                        			<option th:value="SP.DYN.LE00.IN">Life expectancy at birth, total (years)</option>
+                        		</select>
+                        	</div>
+                        	
+                        	<div class="form-group">
+                        		<button class="btn btn-primary"
+										style="width: 15%;" type= "submit">Consultar</button>
+                        	</div>
+                        	
+                        	</form>
+                            <div class="col-md-12" style="margin-top:40px">
+                                <div id="salesByType" style="width:100%; height:1000px;"></div>
+                            </div>
+                            
+                        </div>    
+                        <div>
+                        	<table id="tabla" class="display table table-bordered table-responsive" style="width:100%;margin-bottom:50px;background:#33D7FF" >
+	                        	<thead>
+	                        		<tr>
+	                        			<th>Country Name</th>
+	                        			<th>2005</th>
+	                        			<th>2006</th>
+	                        			<th>2007</th>
+	                        			<th>2008</th>
+	                        			<th>2009</th>
+	                        			<th>2010</th>
+	                        			<th>2011</th>
+	                        			<th>2012</th>
+	                        			<th>2013</th>
+	                        		</tr>
+	                        	</thead>
+	                        	<tbody>
+	                        	<tr>
+	                        		<th>Argentina</th>
+	                        		<td th:each="valor : ${Argentina}"><span th:text="${valor}"></span></td>
+	                        	</tr>
+	                        	<tr>
+	                        		<th>Bolivia</th>
+	                        		<td th:each="valor : ${Bolivia}"><span th:text="${valor}"></span></td>
+	                        	</tr>
+	                        	<tr>
+	                        		<th>Brazil</th>
+	                        		<td th:each="valor : ${Brazil}"><span th:text="${valor}"></span></td>
+	                        	</tr>
+	                        	<tr>
+	                        		<th>Chile</th>
+	                        		<td th:each="valor : ${Chile}"><span th:text="${valor}"></span></td>
+	                        	</tr>
+	                        	<tr>
+	                        		<th>Colombia</th>
+	                        		<td th:each="valor : ${Colombia}"><span th:text="${valor}"></span></td>
+	                        	</tr>
+	                        	<tr>
+	                        		<th>Ecuador</th>
+	                        		<td th:each="valor : ${Ecuador}"><span th:text="${valor}"></span></td>
+	                        	</tr>
+	                        	<tr>
+	                        		<th>Peru</th>
+	                        		<td th:each="valor : ${Peru}"><span th:text="${valor}"></span></td>
+	                        	</tr>
+	                        	<tr>
+	                        		<th>Paraguay</th>
+	                        		<td th:each="valor : ${Paraguay}"><span th:text="${valor}"></span></td>
+	                        	</tr>
+	                        	<tr>
+	                        		<th>Uruguay</th>
+	                        		<td th:each="valor : ${Uruguay}"><span th:text="${valor}"></span></td>
+	                        	</tr>
+	                        	<tr>
+	                        		<th>Venezuela</th>
+	                        		<td th:each="valor : ${Venezuela}"><span th:text="${valor}"></span></td>
+	                        	</tr>
+	                        	</tbody>
+                        	</table>
+                        </div>                    
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:include="fragments/homefooter :: footer"></div>
+        <script th:inline="javascript">
+        /*<![CDATA[*/
+            $(function () { 
+                Highcharts.setOptions({
+                    lang: {
+                        decimalPoint: '.',
+                        thousandsSep: ','
+                    }
+                });
+				
+                drawSalesByTypeChart();
+				//drawSalesByRegionChart();
+            });
+            
+            
+           
+            
+            function drawSalesByTypeChart() {
+                var salesByTypeChart = Highcharts.chart('salesByType', {
+                    chart: {
+                        type: 'line',
+                        margin: 120,
+                        options3d: {
+   							enabled: false,
+                        	alpha: 15,
+                        	beta: 15,
+                        	depth: 110
+                        }
+                    },
+                    title: {
+                        text: /*[[${Indicador}]]*/
+                    },
+                    xAxis: {
+                        categories: ['2005', '2006', '2007', '2008', '2009', '2010', '2011','2012','2013']
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'Datos'
+                        },
+                        tickInterval: 10
+                    },
+                    tooltip: {
+                      	pointFormat: "${point.y:,.0f}"
+                    },
+                    plotOptions: {
+                    	column: {
+                    		depth: 60,
+                      		stacking: true,
+                       		grouping: false,
+                      		groupZPadding: 10
+                        }
+                    },
+                    series: [{
+                        name: 'Argentina',
+                        data: /*[[${Argentina}]]*/ []
+                    }, {
+                        name: 'Bolivia',
+                        data: /*[[${Bolivia}]]*/ []
+                    }, {
+                        name: 'Brazil',
+                        data: /*[[${Brazil}]]*/ []
+                    }, {
+                        name: 'Chile',
+                        data: /*[[${Chile}]]*/ []
+                    }, {
+                        name: 'Colombia',
+                        data: /*[[${Colombia}]]*/ []
+                    }, {
+                        name: 'Ecuador',
+                        data: /*[[${Ecuador}]]*/ []
+                    }, {
+                        name: 'Peru',
+                        data: /*[[${Peru}]]*/ []
+                    }, {
+                        name: 'Paraguay',
+                        data: /*[[${Paraguay}]]*/ []
+                    }, {
+                        name: 'Uruguay',
+                        data: /*[[${Uruguay}]]*/ []
+                    }, {
+                        name: 'Venezuela',
+                        data: /*[[${Venezuela}]]*/ []
+                    }]
+                });
+            }
+            /*]]>*/
+        </script>        
+    </body>
+</html>
