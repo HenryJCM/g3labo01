@@ -23,9 +23,11 @@ import pe.edu.sistemas.g3labo01.repository.ConsultaRepository;
 @SpringBootApplication 
 @Controller
 public class G3labo01Application {
+	
 	private String consulta = "";
 	ConsultaRepository consRep = new ConsultaRepository();
 	boolean resultado = false;
+	
 	public static void main(String[] args) {
 		SpringApplication.run(G3labo01Application.class, args); 
 	}
@@ -154,6 +156,8 @@ public class G3labo01Application {
         
         return "chart";
     }
+	
+	
     
 	
 	
