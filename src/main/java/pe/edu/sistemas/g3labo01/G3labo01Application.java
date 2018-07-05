@@ -13,12 +13,15 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.util.HtmlUtils;
 
 import com.csvreader.CsvReader;
 import com.google.appengine.api.datastore.Entity;
@@ -27,6 +30,8 @@ import pe.edu.sistemas.g3labo01.dominio.Consulta;
 import pe.edu.sistemas.g3labo01.dominio.Precipitacion;
 import pe.edu.sistemas.g3labo01.dominio.Search;
 import pe.edu.sistemas.g3labo01.dominio.Temperatura;
+import pe.edu.sistemas.g3labo01.modelo.BusquedaClima;
+import pe.edu.sistemas.g3labo01.modelo.ResultadoClima;
 import pe.edu.sistemas.g3labo01.repository.ConsultaRepository;
 import pe.edu.sistemas.g3labo01.repository.TempYPrecipRepository;
 
@@ -98,14 +103,8 @@ public class G3labo01Application {
 		        	consRep.agregarEntidad(us);
 		        }
 			}
-	        } catch (FileNotFoundException e) {
-	            e.printStackTrace();
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	        }
-		
-		/**Leer CSV's Precipitacion y Temperatura**/
-		try {
+			
+			/**Leer CSV's Precipitacion y Temperatura**/
 			resultadoTempAndPrecip = typRep.existenDatos();
 			
 			if(!resultadoTempAndPrecip){
@@ -183,14 +182,17 @@ public class G3labo01Application {
 		        	typRep.agregarEntidadTemperatura(tm);
 		        }
 			}
+			
 	        } catch (FileNotFoundException e) {
 	            e.printStackTrace();
 	        } catch (IOException e) {
 	            e.printStackTrace();
 	        }
 		
+		
             return "inicio" ; 
     } 
+	
 	
 	@RequestMapping(value = "/chartSearch", method=RequestMethod.POST)
 	 public String chartSearch(Model model, @ModelAttribute("search") Search search ) {
@@ -320,6 +322,13 @@ public class G3labo01Application {
          model.addAttribute("colorPrecipitacion",colorPreci);
         
         return "clima";
+    }
+	
+	@MessageMapping("/busquedaClima")
+    @SendTo("/tema/resultadoClima")
+    public ResultadoClima resultadoClima(BusquedaClima busquedaClima) throws Exception {
+        Thread.sleep(1000); // simulated delay
+        return new ResultadoClima("1999", "Junio", "12", "12");
     }
 	
 	
