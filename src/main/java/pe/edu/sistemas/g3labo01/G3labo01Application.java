@@ -1,10 +1,15 @@
 package pe.edu.sistemas.g3labo01;
 
+import java.awt.Color;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.boot.SpringApplication; 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +28,7 @@ import pe.edu.sistemas.g3labo01.repository.ConsultaRepository;
 @SpringBootApplication 
 @Controller
 public class G3labo01Application {
-	
+	private static final Log LOG =LogFactory.getLog(G3labo01Application.class);
 	private String consulta = "";
 	ConsultaRepository consRep = new ConsultaRepository();
 	boolean resultado = false;
@@ -157,6 +162,64 @@ public class G3labo01Application {
         model.addAttribute("Venezuela", Venezuela);
         
         return "chart";
+    }
+	
+	@RequestMapping(value = "/clima", method=RequestMethod.GET)
+    public String chart2(Model model) {
+    	
+    	
+    	String Año = "1981";//año que se elige
+    	String mes = "Mayo";//mes que se elige
+    	String Indicador = "Año: "+Año+" Mes: "+mes;
+    	Random r=new Random();
+    	List<Double> DatosTemperatura = Arrays.asList(14.63,21.4,21.66,22.15,12.7,22.2,28.88,28.82,24.18,28.17
+    			,24.78,25.85,13.6,30.01,29.65,30.6,10.5,30.45,28.06,28.3,20.53,24.5,21.92,16.42,29.39,24.71);
+    	int aleatorioTemperatura=r.nextInt(26);
+    	Double valortemp=DatosTemperatura.get(aleatorioTemperatura);
+    	Color colorTemp=Color.GREEN;
+    	    	
+    	if(valortemp > 30) {
+    		colorTemp = Color.RED;
+    	}
+    	else if(valortemp <= 30 && valortemp >= 15) {
+    		colorTemp = Color.YELLOW;
+    	}
+    	else if(valortemp < 15) {
+    		colorTemp = Color.BLUE;
+    	}
+    	    	
+    	String colorTemperatura = String.format("#%02x%02x%02x", colorTemp.getRed(),colorTemp.getGreen(),colorTemp.getBlue());
+    	LOG.info(aleatorioTemperatura+"  "+valortemp+"  "+colorTemperatura);
+    	
+        model.addAttribute("Titulo",Indicador);
+        model.addAttribute("year",Año);
+        model.addAttribute("mes",mes);
+        model.addAttribute("valorTemperatura",valortemp);
+        model.addAttribute("colorTemperatura",colorTemperatura);
+        
+        List<Double> DatosPrecipitacion = Arrays.asList(124.63,221.4,221.66,222.15,512.7,522.2,528.88,728.82,124.18,228.17
+    			,324.78,425.85,513.6,630.01,729.65,530.6,610.5,230.45,28.06,28.3,20.53,24.5,321.92,116.42,529.39,224.71);
+    	int aleatorioPrecipitacion=r.nextInt(26);
+    	Double valorPrecipitacion=DatosPrecipitacion.get(aleatorioPrecipitacion);
+    	Color colorPrecipitacion=Color.GREEN;
+    	    	
+    	if(valorPrecipitacion > 500) {
+    		colorPrecipitacion = Color.BLACK;
+    	}
+    	else if(valorPrecipitacion <= 500 && valorPrecipitacion >= 200) {
+    		colorPrecipitacion = Color.GRAY;
+    	}
+    	else if(valorPrecipitacion < 200) {
+    		colorPrecipitacion = Color.YELLOW;
+    	}
+    	    	
+    	String colorPreci = String.format("#%02x%02x%02x", colorPrecipitacion.getRed(),colorPrecipitacion.getGreen(),colorPrecipitacion.getBlue());
+    	LOG.info(aleatorioTemperatura+"  "+valorPrecipitacion+"  "+colorPreci);
+    	
+    	 model.addAttribute("valorPrecipitacion",valorPrecipitacion);
+         model.addAttribute("colorPrecipitacion",colorPreci);
+        
+        return "clima";
     }
 	
 	
