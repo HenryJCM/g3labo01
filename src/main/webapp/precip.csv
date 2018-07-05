@@ -1,4 +1,4 @@
-WBHUC,year,Jan_precip,Feb_precip,Mar_precip,Apr_precip,May_precip,Jun_precip,July_precip,Aug_precip,Sept_precip,Oct_precip,Nov_precip,Dec_precip,Annual_precip
+wbhuc,year,Jan_precip,Feb_precip,Mar_precip,Apr_precip,May_precip,Jun_precip,July_precip,Aug_precip,Sept_precip,Oct_precip,Nov_precip,Dec_precip,Annual_precip
 1,1981,30.21,24.77,28.02,34.38,39.96,49.04,51.36,43.56,39.53,40.81,39.06,35.45,456.15
 2,1981,27.16,25.60,36.64,34.78,24.08,4.34,2.10,1.83,2.32,8.80,12.40,21.30,201.36
 3,1981,29.51,26.76,30.98,27.54,17.60,3.20,2.67,2.47,1.50,9.59,14.96,26.83,193.63

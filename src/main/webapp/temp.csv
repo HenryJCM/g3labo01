@@ -1,4 +1,4 @@
-WBHUC,year,Jan_Temp,Feb_temp,Mar_temp,Apr_Temp,May_temp,Jun_Temp,July_Temp,Aug_Temp,Sept_temp,Oct_temp,Nov_Temp,Dec_temp,Annual_temp
+wbhuc,year,Jan_Temp,Feb_temp,Mar_temp,Apr_Temp,May_temp,Jun_Temp,July_Temp,Aug_Temp,Sept_temp,Oct_temp,Nov_Temp,Dec_temp,Annual_temp
 1,1981,-9.91,-8.59,-2.17,7.35,14.63,19.00,21.52,19.65,14.12,6.34,-0.43,-6.30,6.27
 2,1981,2.10,4.00,9.51,15.86,21.40,26.17,28.34,26.63,22.67,16.14,10.18,4.61,15.64
 3,1981,2.14,4.43,10.02,16.18,21.66,26.91,29.46,28.07,23.96,17.37,10.63,4.77,16.30

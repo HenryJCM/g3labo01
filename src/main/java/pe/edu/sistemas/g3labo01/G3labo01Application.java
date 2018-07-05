@@ -10,19 +10,25 @@ import java.util.Random;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.boot.SpringApplication; 
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation. *;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.csvreader.CsvReader;
 import com.google.appengine.api.datastore.Entity;
 
 import pe.edu.sistemas.g3labo01.dominio.Consulta;
+import pe.edu.sistemas.g3labo01.dominio.Precipitacion;
 import pe.edu.sistemas.g3labo01.dominio.Search;
+import pe.edu.sistemas.g3labo01.dominio.Temperatura;
 import pe.edu.sistemas.g3labo01.repository.ConsultaRepository;
+import pe.edu.sistemas.g3labo01.repository.TempYPrecipRepository;
 
 @Configuration
 @SpringBootApplication 
@@ -31,9 +37,12 @@ public class G3labo01Application {
 	private static final Log LOG =LogFactory.getLog(G3labo01Application.class);
 	private String consulta = "";
 	ConsultaRepository consRep = new ConsultaRepository();
-	boolean resultado = false;
+	boolean resultadoConsulta = false;
 	
 	
+	//Websockets
+	TempYPrecipRepository typRep = new TempYPrecipRepository();
+	boolean resultadoTempAndPrecip = false;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(G3labo01Application.class, args); 
@@ -41,14 +50,20 @@ public class G3labo01Application {
 	
 	@GetMapping (value = {"/", "/inicio"}) 
     public String inicioConsulta(Model model) { 
+		
 		model.addAttribute("search", new Search());
 		
 		List<Consulta> consultas = new ArrayList<>();
-		/**Leer CSV**/
+		
+		/**Listas para websockets**/
+		List<Precipitacion> precipitaciones = new ArrayList<>();
+		List<Temperatura> temperaturas = new ArrayList<>();
+		
+		/**Leer CSV Consulta**/
 		try {
-			resultado = consRep.existenDatos();
+			resultadoConsulta = consRep.existenDatos();
 			
-			if(!resultado){
+			if(!resultadoConsulta){
 				consultas = new ArrayList<Consulta>();
 	      
 		        CsvReader consultas_import = new CsvReader("data.csv");
@@ -81,6 +96,91 @@ public class G3labo01Application {
 		       /**Agregar Consultas al DataStore**/
 		        for(Consulta us : consultas){
 		        	consRep.agregarEntidad(us);
+		        }
+			}
+	        } catch (FileNotFoundException e) {
+	            e.printStackTrace();
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+		
+		/**Leer CSV's Precipitacion y Temperatura**/
+		try {
+			resultadoTempAndPrecip = typRep.existenDatos();
+			
+			if(!resultadoTempAndPrecip){
+				precipitaciones = new ArrayList<Precipitacion>();
+				temperaturas = new ArrayList<Temperatura>();
+				
+		        CsvReader precipitaciones_import = new CsvReader("precip.csv");
+		        CsvReader temperaturas_import = new CsvReader("temp.csv");
+		        
+		        //Convertir Precipitaciones
+		        precipitaciones_import.readHeaders();
+		        while (precipitaciones_import.readRecord())
+		        {
+		            String wbhucPrecip = precipitaciones_import.get(0);
+		            String yearPrecip = precipitaciones_import.get(1);
+		            String jan_precip = precipitaciones_import.get(2);
+		        	String feb_precip = precipitaciones_import.get(3);
+		        	String mar_precip = precipitaciones_import.get(4);
+		        	String apr_precip = precipitaciones_import.get(5);
+		        	String may_precip = precipitaciones_import.get(6);
+		        	String jun_precip = precipitaciones_import.get(7);
+		        	String july_precip = precipitaciones_import.get(8);
+		        	String aug_precip = precipitaciones_import.get(9);
+		        	String sept_precip = precipitaciones_import.get(10);
+		        	String oct_precip = precipitaciones_import.get(11);
+		        	String nov_precip = precipitaciones_import.get(12);
+		        	String dec_precip = precipitaciones_import.get(13);
+		        	String annual_precip = precipitaciones_import.get(14);
+		           
+			        
+		            Precipitacion precipitacionTemp = new Precipitacion(wbhucPrecip, yearPrecip, jan_precip, feb_precip, mar_precip,
+		            		apr_precip, may_precip, jun_precip, july_precip, aug_precip, sept_precip, oct_precip, nov_precip, dec_precip,
+		            		annual_precip);
+		            
+		            precipitaciones.add(precipitacionTemp);    
+		        }
+		      
+		        precipitaciones_import.close();
+		       /**Agregar Precipitaciones al DataStore**/
+		        for(Precipitacion pr : precipitaciones){
+		        	typRep.agregarEntidadPrecipitacion(pr);
+		        }
+		        
+		      //Convertir Temperaturas
+		        temperaturas_import.readHeaders();
+		        while (temperaturas_import.readRecord())
+		        {
+		            String wbhucTemp = precipitaciones_import.get(0);
+		            String yearTemp = precipitaciones_import.get(1);
+		            String jan_temp = precipitaciones_import.get(2);
+		        	String feb_temp = precipitaciones_import.get(3);
+		        	String mar_temp = precipitaciones_import.get(4);
+		        	String apr_temp = precipitaciones_import.get(5);
+		        	String may_temp = precipitaciones_import.get(6);
+		        	String jun_temp = precipitaciones_import.get(7);
+		        	String july_temp = precipitaciones_import.get(8);
+		        	String aug_temp = precipitaciones_import.get(9);
+		        	String sept_temp = precipitaciones_import.get(10);
+		        	String oct_temp = precipitaciones_import.get(11);
+		        	String nov_temp = precipitaciones_import.get(12);
+		        	String dec_temp = precipitaciones_import.get(13);
+		        	String annual_temp = precipitaciones_import.get(14);
+		           
+			        
+		            Temperatura temperaturasTemp = new Temperatura(wbhucTemp, yearTemp, jan_temp, feb_temp, mar_temp,
+		            		apr_temp, may_temp, jun_temp, july_temp, aug_temp, sept_temp, oct_temp, nov_temp, dec_temp,
+		            		annual_temp);
+		            
+		            temperaturas.add(temperaturasTemp);    
+		        }
+		      
+		        temperaturas_import.close();
+		       /**Agregar Temperaturas al DataStore**/
+		        for(Temperatura tm : temperaturas){
+		        	typRep.agregarEntidadTemperatura(tm);
 		        }
 			}
 	        } catch (FileNotFoundException e) {
@@ -165,7 +265,7 @@ public class G3labo01Application {
     }
 	
 	@RequestMapping(value = "/clima", method=RequestMethod.GET)
-    public String chart2(Model model) {
+    public String clima(Model model) {
     	
     	
     	String Año = "1981";//año que se elige
