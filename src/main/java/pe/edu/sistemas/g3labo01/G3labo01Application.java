@@ -28,6 +28,8 @@ public class G3labo01Application {
 	ConsultaRepository consRep = new ConsultaRepository();
 	boolean resultado = false;
 	
+	
+	
 	public static void main(String[] args) {
 		SpringApplication.run(G3labo01Application.class, args); 
 	}
