@@ -8,7 +8,7 @@
 
     <head>
         <title>Laboratorio 2 Sistemas Distribuidos</title>
-        <meta content="This demo shows how to use HighCharts with Spring Boot" name="description" />
+        <meta content="Implementacion de WebSockets con Datos Climaticos" name="description" />
         <object th:include="fragments/head :: head" th:remove="tag"></object>
         
         <link th:href="@{/assets/pages/css/profile.min.css}" rel="stylesheet" type="text/css" />
@@ -21,7 +21,6 @@
                 <div class="page-head" style="background-color:#eff3f8;padding-top:40px">
                     <div class="container">
                         <div class="row" style="margin-bottom:10px">
-                            
                         </div>
                         <div class="row" style="margin-bottom:30px">
                         	<div style="margin-bottom:30px">
@@ -30,7 +29,7 @@
                         	<div>
                         	
                         	<form>
-                        	<div>
+                        	<div class="form-group">
 	                        	<h3>A&Ntilde;O:  </h3>
 	                        		<select id="year">
 	                        			<option value="1981">1981</option>
@@ -72,40 +71,40 @@
 	                        			<option value="Diciembre">Diciembre</option>
 	                        		</select>
                         	</div>
+                        	
+                        	<div class="form-group">
+                        		<button  id="send"  class="btn btn-primary"
+										style="width: 15%;" type= "submit">Consultar</button>
+                        	</div>
                         	</form>
                         </div>
                         
-                        	<div class="col-md-12" style="margin-top:40px">
+                        	<div id="divData" class="col-md-12" style="margin-top:40px; display:none" >
 	                        	<div class="col-md-6" style="margin-top:40px">
-	                        		<div class="col-md-2" style="margin-top:40px">
-	                               		<label>A&Ntilde;O</label><h3 th:text="${year}"></h3>
+	                        		<div class="col-md-2" style="margin-top:40px" >
+	                               		<label>A&Ntilde;O : </label><label id="yearResultado"></label>
 	                               	</div>
 	                               	<div class="col-md-2" style="margin-top:40px">
-	                               		<label>MES</label><h3 th:text="${mes}"></h3>
+	                               		<label>MES: </label><label id="mesResultado"></label>
 	                               	</div>
 	                               	<div class="col-md-2" style="margin-top:40px">
-	                               		<label>Valor</label><h3 th:text="${valorTemperatura}"></h3>
-	                               	</div>
-	                              </div>
-	                              
-	                              <div class="col-md-6" style="margin-top:40px">
-		                              <div class="col-md-2" style="margin-top:40px">
-		                                	<label>A&Ntilde;O</label><h3 th:text="${year}"></h3>
-		                              </div>
-		                              <div class="col-md-2" style="margin-top:40px">
-		                               		<label>MES</label><h3 th:text="${mes}"></h3>
-		                              </div>
-		                              <div class="col-md-2" style="margin-top:40px">
-		                               		<label>Valor</label><h3 th:text="${valorPrecipitacion}"></h3>
-		                              </div>
-	                              </div>
+	                               <label>Temperatura:&nbsp;   </label><label id="valorTemperatura"></label>
+	                            </div>
+	                               	<div class="col-md-2" style="margin-top:40px">
+		                            <label>Precipitacion:&nbsp;  </label><label id="valorPrecipitacion"></label>
+		                        </div>
+	                             </div>
                             </div>
-                            <div class="col-md-6" style="margin-top:40px">
+                            
+                             
+                            <div id="divTemp" class="col-md-6" style="margin-top:40px; display:none">
                                 <div id="temperatura" style="width:100%; height:1000px;"></div>
                             </div>
-                            <div class="col-md-6" style="margin-top:40px">
+                            <div id="divPrecip" class="col-md-6" style="margin-top:40px; display:none" >
                                 <div id="precipitacion" style="width:100%; height:1000px;"></div>
                             </div>
+                            
+                           
                            
                         </div>    
                                             
@@ -114,8 +113,9 @@
             </div>
         </div>
         <div th:include="fragments/homefooter :: footer"></div>
-        <script th:inline="javascript">
+        <!-- script th:inline="javascript">
         /*<![CDATA[*/
+        	
             $(function () { 
                 Highcharts.setOptions({
                     lang: {
@@ -168,7 +168,7 @@
                       		groupZPadding: 10
                         },
                         series:{
-                        	color: /*[[${colorPrecipitacion}]]*/ 
+                        	color:  /*[[${colorPrecipitacion}]]*/ 
                         }
                     },
                     series: [{
@@ -236,6 +236,6 @@
                 });
             }
             /*]]>*/
-        </script>        
+        </script-->        
     </body>
 </html>

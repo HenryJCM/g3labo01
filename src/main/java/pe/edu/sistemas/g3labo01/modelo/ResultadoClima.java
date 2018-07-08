@@ -4,10 +4,10 @@ public class ResultadoClima {
 	
 	private String year;
 	private String mes;
-	private String temp;
-	private String precip;
+	private Double temp;
+	private Double precip;
 	
-	public ResultadoClima(String year, String mes, String temp, String precip) {
+	public ResultadoClima(String year, String mes, Double temp, Double precip) {
 		this.year = year;
 		this.mes = mes;
 		this.temp = temp;
@@ -32,19 +32,19 @@ public class ResultadoClima {
 		this.mes = mes;
 	}
 
-	public String getTemp() {
+	public Double getTemp() {
 		return temp;
 	}
 
-	public void setTemp(String temp) {
+	public void setTemp(Double temp) {
 		this.temp = temp;
 	}
 
-	public String getPrecip() {
+	public Double getPrecip() {
 		return precip;
 	}
 
-	public void setPrecip(String precip) {
+	public void setPrecip(Double precip) {
 		this.precip = precip;
 	}
 
